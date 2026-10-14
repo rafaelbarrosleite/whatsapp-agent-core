@@ -1,0 +1,41 @@
+[project]
+name = "intelliagentsbase"
+version = "0.1.0"
+description = "Core reutilizável de agente de atendimento WhatsApp multi-tenant"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.128.8",
+    "langchain-anthropic>=0.3.22",
+    "langfuse>=3.7.0",
+    "langgraph>=0.6.11",
+    "langgraph-checkpoint-postgres>=3.1.0",
+    "psycopg[binary,pool]>=3.3.4",
+    "pydantic>=2.13.4",
+    "pydantic-settings>=2.11.0",
+    "supabase>=2.30.1",
+    "apscheduler>=3.10.0",
+    "uvicorn>=0.39.0",
+    "cryptography>=41",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.4.0",
+    "ruff>=0.15.15",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]  # pycodestyle, pyflakes, isort
+
+[tool.ruff.lint.per-file-ignores]
+# Cadeias de mock do Supabase (.table.return_value.select...) passam de 100 colunas.
+"tests/**" = ["E501"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

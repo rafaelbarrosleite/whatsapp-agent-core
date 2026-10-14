@@ -1,0 +1,56 @@
+name: Quality
+
+# Roda em todo PR e em todo push na main. Nenhum job usa segredos de
+# produção nem acessa bancos reais (a trava em tests/conftest.py garante
+# que teste algum conecta a Supabase/Postgres real).
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - run: uv sync --locked --dev
+      - run: uv run pytest -q
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - run: uv sync --locked --dev
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+
+  sql:
+    # Sobe supabase/schema.sql num Postgres 17 descartável (Docker do runner)
+    # e confere que o banco nasce fechado e que a idempotência funciona.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: supabase/tests/run.sh supabase/tests/schema.sql
+      - run: supabase/tests/run.sh supabase/tests/idempotency_core.sql
+
+  segredos:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

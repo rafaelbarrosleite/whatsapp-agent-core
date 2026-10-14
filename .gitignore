@@ -1,0 +1,32 @@
+# Segredos — NUNCA versionar
+.env
+.env.*
+!.env.example
+
+# Ambiente virtual do uv
+.venv/
+
+# Cache do Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Cache do ruff e mypy
+.ruff_cache/
+.mypy_cache/
+
+# Pytest
+.pytest_cache/
+
+# Captura do comando `script` do terminal (contém segredos em texto puro)
+typescript
+
+# macOS
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+
+# Claude Code (configuração local — não pertence ao repositório)
+.claude/
