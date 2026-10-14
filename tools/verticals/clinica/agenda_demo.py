@@ -110,8 +110,9 @@ def _make_criar_agendamento(client: Client, core: Client) -> ToolFactory:
             contato_id: str, data: str, horario: str, convenio_nome: str = "Particular"
         ) -> str:
             """Marca a consulta do paciente. Use só depois de o paciente escolher
-            um horário de buscar_slots_disponiveis e confirmar. data em
-            YYYY-MM-DD, horario em HH:MM."""
+            um horário de buscar_slots_disponiveis e dizer para quem é. data em
+            YYYY-MM-DD, horario em HH:MM. A consulta fica no cadastro deste
+            WhatsApp: não peça nome, e-mail nem documento para marcar."""
             fuso = fuso_do_tenant(tenant_id)
             try:
                 quando = datetime.strptime(f"{data} {horario}", "%Y-%m-%d %H:%M").replace(
@@ -165,8 +166,9 @@ def _make_buscar_agendamentos(client: Client) -> ToolFactory:
     def factory(tenant_id: str) -> BaseTool:
         @tool
         def buscar_agendamentos(contato_id: str) -> str:
-            """Lista as próximas consultas do paciente. Use quando ele perguntar
-            pelas consultas marcadas."""
+            """Lista as próximas consultas do paciente desta conversa. Use direto
+            quando ele perguntar pelas consultas marcadas, sem perguntar para
+            quem é: só mostra as do próprio WhatsApp."""
             fuso = fuso_do_tenant(tenant_id)
             r = (
                 client.table("agendamentos")
