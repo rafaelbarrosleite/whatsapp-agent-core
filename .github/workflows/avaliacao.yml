@@ -1,0 +1,56 @@
+name: Avaliação do agente
+
+# Roda a bateria de evals/casos.toml com o Claude de verdade. Só dispara quando
+# muda algo que altera o comportamento do agente (prompt, nós, tools,
+# guardrails ou os próprios casos), e à mão pela aba Actions.
+#
+# Precisa do secret ANTHROPIC_API_KEY no repositório. Sem ele (ou em PR de
+# fork, que não recebe secrets), o job avisa e não falha.
+# Custo: ~15 casos, 1 a 3 chamadas ao Sonnet cada, centavos de dólar por rodada.
+on:
+  workflow_dispatch:
+    inputs:
+      repeticoes:
+        description: "Rodadas por caso (mede a variação do modelo)"
+        default: "1"
+  pull_request:
+    paths:
+      - "core/**"
+      - "tools/**"
+      - "security/**"
+      - "evals/**"
+      - "app/tools_setup.py"
+
+permissions:
+  contents: read
+
+jobs:
+  avaliar:
+    runs-on: ubuntu-latest
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - id: chave
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::notice::Sem o secret ANTHROPIC_API_KEY: avaliação não rodou."
+            echo "pular=1" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.chave.outputs.pular != '1'
+        uses: actions/checkout@v4
+      - if: steps.chave.outputs.pular != '1'
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - if: steps.chave.outputs.pular != '1'
+        run: uv sync --locked --dev
+      - if: steps.chave.outputs.pular != '1'
+        env:
+          REPETICOES: ${{ inputs.repeticoes || '1' }}
+        run: uv run python -m evals.rodar --repeticoes "$REPETICOES"
+      - if: always() && steps.chave.outputs.pular != '1'
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultado-avaliacao
+          path: evals/resultado.json
+          if-no-files-found: ignore

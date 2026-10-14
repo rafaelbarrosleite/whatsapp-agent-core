@@ -66,6 +66,6 @@ O horário da consulta é sempre interpretado no fuso da clínica (`tenants.conf
 
 ## O que eu faria diferente / próximos passos
 
-- **Avaliação de LLM no CI:** bateria de conversas com respostas esperadas, rodando a cada PR que mexe em prompt ou tool.
-- **RAG com embeddings:** a base de conhecimento hoje é busca por palavras-chave com prioridade, suficiente para dezenas de blocos por clínica. Com bases maiores, pgvector no mesmo Postgres.
+- **Avaliação com mais casos e LLM juiz:** a bateria de `evals/` cobre o que tem resposta objetiva; tom e clareza pediriam um juiz por LLM calibrado com conversas reais.
+- **RAG com embeddings:** a base de conhecimento hoje é busca por palavras-chave (BM25) com prioridade, suficiente para dezenas de blocos por clínica. Com bases maiores, pgvector no mesmo Postgres.
 - **Traces no Langfuse:** as chaves já estão nas settings; o custo hoje sai de `uso_ia`.

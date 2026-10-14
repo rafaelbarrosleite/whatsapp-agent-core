@@ -30,3 +30,6 @@ typescript
 
 # Claude Code (configuração local — não pertence ao repositório)
 .claude/
+
+# Saída da avaliação do agente (evals/rodar.py)
+evals/resultado.json
