@@ -2,7 +2,7 @@
 
 > Plano original de construção, mantido como registro. Todas as fases foram entregues; o motor está em produção atendendo uma clínica.
 
-> Construir em ordem. Cada fase entrega algo funcional e testável. Não avançar sem a fase anterior rodando. Rafael está aprendendo — ao fim de cada fase, explicar o que foi feito e por quê.
+> Construir em ordem. Cada fase entrega algo funcional e testável. Não avançar sem a fase anterior rodando. Ao fim de cada fase, documentar o que foi feito e por quê.
 
 ---
 
@@ -98,5 +98,5 @@
 
 ---
 
-## Ordem recomendada de aprendizado
-Fase 0 → 1 → 2 → 3 são o núcleo conceitual (FastAPI, dados, LangGraph). É onde Rafael mais aprende. Fases 4-6 conectam ao mundo real.
+## Ordem de construção
+Fase 0 → 1 → 2 → 3 são o núcleo (FastAPI, dados, LangGraph). Fases 4-6 conectam ao mundo real.

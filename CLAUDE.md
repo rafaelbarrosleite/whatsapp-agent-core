@@ -145,9 +145,9 @@ Langfuse é a fonte de verdade do custo: monitorar custo por conversa, por tenan
 ## 8. COMO TRABALHAR NESTE PROJETO
 
 - Construir **uma fase por vez** (ver ROADMAP.md). Não pular fases.
-- Ao final de cada fase: rodar, testar, e explicar ao Rafael o que foi feito e por quê (ele está aprendendo).
+- Ao final de cada fase: rodar, testar e documentar o que foi feito e por quê.
 - Preferir entregas completas e funcionais a fragmentos.
-- Sempre explicar o "porquê" de cada decisão de código — o objetivo é que Rafael domine a stack, não só receba código.
+- Toda decisão de código precisa de justificativa registrada (no PR ou em `docs/`). Mudança sem o "porquê" não entra.
 - Antes de qualquer ação destrutiva ou irreversível, pedir confirmação.
 
 ---
