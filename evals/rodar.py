@@ -269,6 +269,8 @@ async def principal(argv: list[str] | None = None) -> int:
                 print(
                     f"{'✅' if resultado.passou else '❌'} {resultado.id} {resultado.falhas or ''}"
                 )
+                if not resultado.passou:  # a resposta no log basta para diagnosticar
+                    print("   resposta: " + resultado.resposta.replace("\n", " ")[:500])
                 resultados.append(resultado)
 
     texto = relatorio(resultados, args.minimo)

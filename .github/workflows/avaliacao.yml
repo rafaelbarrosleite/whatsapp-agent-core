@@ -6,7 +6,7 @@ name: Avaliação do agente
 #
 # Precisa do secret ANTHROPIC_API_KEY no repositório. Sem ele (ou em PR de
 # fork, que não recebe secrets), o job avisa e não falha.
-# Custo: ~15 casos, 1 a 3 chamadas ao Sonnet cada, centavos de dólar por rodada.
+# Custo: 15 casos × 3 repetições, 1 a 3 chamadas ao Sonnet cada: centavos por PR.
 on:
   workflow_dispatch:
     inputs:
@@ -46,7 +46,8 @@ jobs:
         run: uv sync --locked --dev
       - if: steps.chave.outputs.pular != '1'
         env:
-          REPETICOES: ${{ inputs.repeticoes || '1' }}
+          # Em PR roda 3x: o modelo varia, e um acerto isolado pode ser sorte.
+          REPETICOES: ${{ inputs.repeticoes || '3' }}
         run: uv run python -m evals.rodar --repeticoes "$REPETICOES"
       - if: always() && steps.chave.outputs.pular != '1'
         uses: actions/upload-artifact@v4

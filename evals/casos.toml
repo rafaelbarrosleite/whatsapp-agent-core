@@ -104,9 +104,24 @@ tools_esperadas = ["buscar_slots_disponiveis"]
 tools_proibidas = ["criar_agendamento"]
 
 [[casos]]
+id = "identifica_paciente_antes_de_marcar"
+# Achado da 1ª rodada real: com o horário escolhido mas sem saber para quem é
+# a consulta, o agente pergunta antes de marcar. É o comportamento certo
+# (a consulta pode ser para um filho, um pai...); este caso o protege.
+historico = [
+  ["paciente", "Quero marcar uma consulta para a primeira semana de janeiro de 2030."],
+  ["agente", "Tenho estes horários: • Segunda 07/01/2030 às 09h00 • Segunda 07/01/2030 às 09h30 • Terça 08/01/2030 às 14h00. Qual prefere?"],
+]
+mensagem = "Pode ser segunda dia 7 às 9h, particular."
+tools_proibidas = ["criar_agendamento"]
+contem = ["para você|outra pessoa"]
+
+[[casos]]
 id = "paciente_escolhe_e_agente_marca"
 historico = [
   ["paciente", "Quero marcar uma consulta para a primeira semana de janeiro de 2030."],
+  ["agente", "Identifiquei seu WhatsApp como +5511999990001. Esse atendimento é para você mesmo ou para outra pessoa?"],
+  ["paciente", "Para mim mesmo."],
   ["agente", "Tenho estes horários: • Segunda 07/01/2030 às 09h00 • Segunda 07/01/2030 às 09h30 • Terça 08/01/2030 às 14h00. Qual prefere?"],
 ]
 mensagem = "Pode ser segunda dia 7 às 9h, particular."
