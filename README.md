@@ -133,3 +133,7 @@ tests/          pytest
 ## Sobre
 
 Construído por **Rafael Leite** ([IntelliAgentes](https://github.com/rafaelbarrosleite)), com desenvolvimento assistido por IA (Claude Code). O [`CLAUDE.md`](CLAUDE.md) é a memória do projeto: decisões fechadas, requisitos de segurança e convenções que o assistente segue em cada sessão.
+
+## Uso
+
+Código publicado para avaliação técnica. Você pode ler, clonar e rodar localmente para estudar. Uso comercial, redistribuição ou oferta como serviço não são autorizados sem permissão por escrito do autor. Copyright © 2026 Rafael Leite. Todos os direitos reservados.
