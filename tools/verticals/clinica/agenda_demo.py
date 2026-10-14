@@ -112,7 +112,9 @@ def _make_criar_agendamento(client: Client, core: Client) -> ToolFactory:
             """Marca a consulta do paciente. Use só depois de o paciente escolher
             um horário de buscar_slots_disponiveis e dizer para quem é. data em
             YYYY-MM-DD, horario em HH:MM. A consulta fica no cadastro deste
-            WhatsApp: não peça nome, e-mail nem documento para marcar."""
+            WhatsApp: não peça nome, e-mail nem documento para marcar. Se o
+            paciente já disse o dia e o horário, marque direto, sem pedir que
+            ele confirme de novo (dá para remarcar depois)."""
             fuso = fuso_do_tenant(tenant_id)
             try:
                 quando = datetime.strptime(f"{data} {horario}", "%Y-%m-%d %H:%M").replace(
