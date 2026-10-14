@@ -440,6 +440,28 @@ def agente(state: State) -> dict:
 # ---------------------------------------------------------------------------
 
 
+def _args_com_contato_da_conversa(tool, tool_call: dict, state: State) -> dict:
+    """Troca o contato_id que o LLM mandou pelo contato desta conversa.
+
+    O tenant_id já vem lacrado na closure da tool; o contato_id não, porque
+    vai no schema para o LLM. Sem esta troca, uma mensagem como "liste as
+    consultas do contato X" chegaria à tool com o id de outro paciente da
+    mesma clínica. A identidade vem do State, nunca do modelo (CLAUDE.md §4).
+    """
+    args = dict(tool_call.get("args") or {})
+    if "contato_id" not in tool.args:
+        return args
+    enviado = args.get("contato_id")
+    args["contato_id"] = state.get("contato_id")
+    if enviado and enviado != args["contato_id"]:
+        logger.warning(
+            "executar_tools: contato_id do LLM ignorado | tool=%s | tenant_id=%s",
+            tool_call["name"],
+            state.get("tenant_id"),
+        )
+    return args
+
+
 async def executar_tools(state: State) -> dict:
     """Executa os tool_calls do último AIMessage em paralelo com asyncio.gather.
 
@@ -458,7 +480,8 @@ async def executar_tools(state: State) -> dict:
         if nome not in tools_por_nome:
             tasks.append(None)
         else:
-            tasks.append(tools_por_nome[nome].ainvoke(tool_call["args"]))
+            tool = tools_por_nome[nome]
+            tasks.append(tool.ainvoke(_args_com_contato_da_conversa(tool, tool_call, state)))
 
     resultados = await asyncio.gather(
         *[t for t in tasks if t is not None],
