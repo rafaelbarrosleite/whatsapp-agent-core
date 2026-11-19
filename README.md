@@ -1,5 +1,7 @@
 # whatsapp-agent-core
 
+> **English summary.** A **multi-tenant** engine for WhatsApp customer-service agents, built with **LangGraph, Claude, FastAPI and Supabase**. It runs in production serving the patients of a medical clinic. One instance serves many businesses: the WhatsApp number that receives a message identifies the tenant, and each tenant has its own prompt, knowledge base and industry-specific tools. The core knows nothing about any industry, so moving to a new one means registering different tools and a different prompt. It includes per-conversation memory, deterministic input guardrails, an output check that numbers quoted in a reply have a source in the knowledge base, and handoff to a human. This repository is the public version of the production engine, with no customer data and a demo calendar in place of the clinic's real one. Released under the [MIT licence](LICENSE). The rest of this README is in Portuguese.
+
 Motor **multi-tenant** de agente de atendimento por WhatsApp, feito com **LangGraph + Claude + FastAPI + Supabase**. Está em produção atendendo pacientes de uma clínica médica.
 
 Uma única instância atende várias empresas ("tenants"). O número de WhatsApp que recebe a mensagem identifica a empresa. Cada uma tem seu prompt, sua base de conhecimento e as tools do seu segmento (vertical). O core não conhece nenhum segmento: trocar de vertical é trocar as tools registradas e o prompt.
